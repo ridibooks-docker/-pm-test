@@ -1,5 +1,5 @@
 FROM node:slim
 
-ADD . /tmp
+ADD ./bin /tmp
 WORKDIR /tmp
 RUN npm install
