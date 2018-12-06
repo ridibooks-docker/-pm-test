@@ -56,7 +56,7 @@ const main = async () => {
         const [collections, environment] = await Promise.all([getCollections(), getEnvironment()]);
         collections.forEach(collection => scenarioTest(collection, environment))
     } catch (err) {
-        console.log(err);
+        noticeError(err.message)
         process.exit(1);
     }
 };
