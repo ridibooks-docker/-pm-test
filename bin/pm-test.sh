@@ -27,4 +27,5 @@ until $(curl --output /dev/null --silent --head --insecure --fail $STATUS_CHECK_
     fi
 done
 
+echo "node scenario-test.js $COLLECTION_NAMES $ENVIRONMENT $PM_API_KEY"
 run_and_check_exit_code "node scenario-test.js $COLLECTION_NAMES $ENVIRONMENT $PM_API_KEY"
