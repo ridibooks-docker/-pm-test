@@ -18,7 +18,7 @@ const checkErrorAndSummary = (err, summary) => {
     let errorRaised = false;
     if (err !== null) {
         noticeError(err);
-        throw new Error(` collections: "${collectionName}" test fail`);
+        throw new Error(`test fail`);
     }
     for (const exceution of summary.run.executions) {
         if (exceution.requestError) {
@@ -35,7 +35,7 @@ const checkErrorAndSummary = (err, summary) => {
     }
 
     if (errorRaised) {
-        throw new Error(` collections: "${collectionName}" test fail`);
+        throw new Error(`test fail`);
     }
     console.log(`collection: "${collectionName}" passed`);
 };
