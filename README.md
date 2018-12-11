@@ -14,8 +14,21 @@ postman api test 이미지
 
 ## How to use
 1. 환경 변수 세팅을 하고, 사용하고 싶은 파일이 있으면 "/tmp/src/"에 마운트를 해서 도커를 띄운다
-2. 도커내에서 pm-test.sh를 실행한다.
 
+2. 도커 내에서 pm-test.sh를 실행한다.
+
+### 예시
+1. src 파일
+```
+ # src/
+ COLLECTION_NAME1.postman_collection.json (postman export 그대로)
+ COLLECTION_NAME2.postman_collection.jso로
+ ENVIRONMENT.postman_environment.json
+```
+2. COLLECTION_NAMES
+```
+COLLECTION_NAMES="COLLECTION_NAME1,COLLECTION_NAME2"
+```
 ## Installed
 - node:slim
 
