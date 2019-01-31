@@ -11,6 +11,14 @@ const getParsedRequest = request => ({
   body: JSON.stringify(request.body),
 });
 
+const getParsedResponse = response =>({
+  status:response.status,
+  code : response.code,
+  headers : JSON.stringify(response.headers),
+  stream: JSON.stringify(response.stream),
+  cookies: JSON.stringify(response.cookies)
+})
+
 const checkErrorAndSummary = (err, summary) => {
   const collectionName = summary.collection.name;
   let errorRaised = false;
@@ -19,17 +27,20 @@ const checkErrorAndSummary = (err, summary) => {
     throw new Error('test fail');
   }
   for (const exceution of summary.run.executions) {
-    const { requestError, request } = exceution;
+    const { requestError, request,response, assertions } = exceution;
+    
     if (requestError) {
-      noticeError({ collectionName, error: requestError, request: getParsedRequest(request) });
+      noticeError({ collectionName, error: requestError, request: getParsedRequest(request), response: getParsedResponse(response)});
       errorRaised = true;
       continue;
     }
-    for (const assertion of exceution.assertions) {
-      const { error } = assertion;
-      if (error) {
-        errorRaised = true;
-        noticeError({ collectionName, error, request: getParsedRequest(request) });
+    if(assertions){
+      for (const assertion of assertions) {
+        const { error } = assertion;
+        if (error) {
+          errorRaised = true;
+          noticeError({ collectionName, error, request: getParsedRequest(request), response: getParsedResponse(response)});
+        }
       }
     }
   }
