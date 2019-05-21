@@ -5,7 +5,7 @@ const noticeError = (error) => {
 
 const getParsedRequest = request => ({
   method: request.method,
-  url: `${request.url.protocol}/${request.url.host.join('.')}`,
+  url: `${request.url.protocol}://${request.url.host.join('.')}`,
   query: JSON.stringify(request.url.query.reference),
   header: JSON.stringify(request.headers.reference),
   body: JSON.stringify(request.body),
@@ -15,7 +15,6 @@ const getParsedResponse = response =>({
   status:response.status,
   code : response.code,
   headers : JSON.stringify(response.headers),
-  stream: JSON.stringify(response.stream),
   cookies: JSON.stringify(response.cookies)
 })
 
