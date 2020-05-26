@@ -11,7 +11,7 @@ import handler from './handler.js'
 
 async function run(environment, collections, options) {
     if (options.healthCheckUrl != null) {
-        console.log('Health check url providied: ' + options.healthCheckUrl);
+        console.log('Health check url provided: ' + options.healthCheckUrl);
 
         const agent = new https.Agent({ rejectUnauthorized: false });
         const startedAt = new Date();
