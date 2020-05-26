@@ -2,35 +2,47 @@
 postman api test 이미지
 
 ## Feature
-1. 테스트가 성공하면 success, 실패하면 failure 과 exit code 1을 뱉는다. 
-2. src에 이름에 맞는 collection 혹은 environment이 존재하면 사용하고, 존재하지 않으면 postman api로 가져 온다.
-3. STATUS_CHECK_URL을 통해 서버가 정상 작동함을 체크를 하고 테스트를 실행한다. 5분간 해당 url에서 응답이 없으면 exit code1을 뱉는다.
+1. 테스트가 성공하면 exit code 0, 실패하면 exit code 1을 리턴한다
+2. 테스트 실행 전 서버가 정상 작동함을 사전 체크한다. 5분간 health check url에서 응답이 없으면 exit code 1을 리턴한다.
 
 ### Environment
 1. PM_API_KEY : [postman api key](https://docs.api.getpostman.com/#authentication)
-2. COLLECTION_NAMES : 테스트 할 postman collection 이름들 (","로 구분함)
-3. ENVIRONMENT : 테스트 할 postman environment 이름
-4. STATUS_CHECK_URL : 서버가 정상 작동 함을 확인 할 수 있는 url
 
 ## How to use
-1. 환경 변수 세팅을 하고, 사용하고 싶은 파일이 있으면 "/tmp/src/"에 마운트를 해서 도커를 띄운다
+```sh
+$ git clone https://github.com/ridibooks-docker/pm-test.git
+$ cd pm-test
 
-2. 도커 내에서 pm-test.sh를 실행한다.
+$ # launch locally
+$ node pm-test.js --help
+
+$ # or install globally
+$ npm install -g .
+$ pm-test --help
+```
 
 ### 예시
-1. src 파일
-```
- # src/
- COLLECTION_NAME1.postman_collection.json (postman export 그대로)
- COLLECTION_NAME2.postman_collection.jso로
- ENVIRONMENT.postman_environment.json
-```
-2. COLLECTION_NAMES
-```
-COLLECTION_NAMES="COLLECTION_NAME1,COLLECTION_NAME2"
-```
-## Installed
-- node:slim
+1. 로컬 파일 이용
+```sh
+$ pm-test dir docs/postman/src  # local 환경으로 src 폴더 내의 모든 컬렉션 실행
 
-## TODO
-- 에러 발생 시, slack api call
+$ cd docs/postman/src
+$ pm-test dir .  # 아무 경로나 가능
+
+$ pm-test dir . -e development  # development 환경으로 현위치의 모든 컬렉션 실행 (-e 옵션 생략시 local)
+$ pm-test dir . -c Annotations,Progress  # 현위치의 컬렉션들 중 이름이 Annotations, Progress인 것만 실행 (없으면 에러, 생략시 전부 실행)
+
+$ pm-test dir . --health-check-url "https://libray-api/health"  # 테스트를 시작하기 전 해당 url에 HEAD 요청을 날려 200 응답이 올 때까지 최대 5분간 대기한다
+
+$ pm-test dir . -q  # CI 등 화려한 출력 필요가 없을 경우 -q 사용
+```
+
+2. API 이용
+```sh
+$ pm-test api "Library Api" PMAK-12345  # 해당 키로 인증해 Library Api 워크스페이스를 가져와 local 환경으로 해당 워크스페이스의 모든 컬렉션을 실행
+$ pm-test api "Library Api" PMAK-12345 -e development -c ShelfOperation  # 위 옵션들 다 사용 가능
+
+$ export PM_API_KEY=PMAK-12345
+$ pm-test api "Library Api"  # API KEY는 편한 로컬 테스팅을 위해 셸 환경변수에 담아둘 수 있다
+$ pm-test api "Library Api" PMAK-56789  # 우선순위는 인자에 있음
+```

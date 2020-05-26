@@ -1,0 +1,19 @@
+{
+  "name": "pm-test",
+  "version": "2.0.0",
+  "type": "module",
+  "license": "ISC",
+  "preferGlobal": true,
+  "bin": {
+    "pm-test": "./pm-test.js"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "commander": "^5.1.0",
+    "glob": "^7.1.6",
+    "glob-promise": "^3.4.0",
+    "json-colorizer": "^2.2.2",
+    "newman": "^5.0.1",
+    "yargs": "^15.3.1"
+  }
+}

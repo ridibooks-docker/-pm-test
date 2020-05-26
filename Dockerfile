@@ -1,5 +1,5 @@
-FROM node:10-slim
+FROM node:14-slim
 
-ADD ./bin /tmp
-WORKDIR /tmp
+WORKDIR /app
+COPY *.js* ./
 RUN npm install
